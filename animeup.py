@@ -31,18 +31,13 @@ class Anime(object):
         self.status = "pending"
 
 
-def myfunct(anime):
-    if anime in new_episodes_list:
-        return True
-    else:
-        return False
 
 # Animes that I follow
 myAnimeList = ["Beastars 2nd Season","Re:Zero kara Hajimeru Isekai Seikatsu 2nd Season Part 2","Dr. Stone: Stone Wars",
                 "Kumo Desu ga, Nani Ka?","Jujutsu Kaisen (TV)","Shingeki no Kyojin: The Final Season","Log Horizon: Entaku Houkai",
                 "Tensei shitara Slime Datta Ken 2nd Season","Yakusoku no Neverland 2nd Season",
                 "Tatoeba Last Dungeon Mae no Mura no Shounen ga Joban no Machi de Kurasu Youna Monogatari",
-                "Kimetsu no Yaiba Movie: Mugen Ressha-hen","Boku no Hero Academia 5th Season"]
+                "Kimetsu no Yaiba Movie: Mugen Ressha-hen","Boku no Hero Academia 5th Season", "One Piece"]
 
 # Url request and get data
 url = 'http://jkanime.net'
@@ -53,6 +48,7 @@ soup = bs(websiteHTML, 'html.parser')
 headers = soup.find_all('a', {'class':"bloqq"})
 new_episodes_list = []
 
+print('Latest episodes uploaded:', end='\n\n')
 for new_episode in headers:
     anime_name = new_episode.find('div', {'class':"anime__sidebar__comment__item__text"}).find('h5').text
     episode_number = new_episode['href'].split('/')[4]
@@ -70,12 +66,8 @@ for new_episode in headers:
 
 for anime in new_episodes_list:
     print(anime)
-news = list(filter(myfunct,myAnimeList))
-print("\n{}".format(news))
+newer = [anime.name for anime in new_episodes_list if anime.name in myAnimeList]
+print("\n{}".format(newer))
 
-if len(news) >= 1:
-    bt.balloon_tip("Anime Available - Download Now!", "Click on this notification to start download {0}".format(news[0]))
-
-
-## Notitas al pie:
-# Tengo que corregir la funcion del filter para que trabaje con el nombre de los objetos anime.
+if len(newer) >= 1:
+    bt.balloon_tip("Anime Available - Download Now!", "Click on this notification to start download {0}".format(newer[0]))
